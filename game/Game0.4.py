@@ -1,26 +1,6 @@
-''' Game0.3
-by Emma, Nathalie, Nisa
-Updated 8/2/16
-
-TODO:
-Name game!
-Make sprites
-    - Powerups (if there's time)
-    - Bosses (if there's time)
-    - Spritesheet
-    - Make jumping mechanic for player
-Make better backgrounds (I (Emma) made these in 5 minutes in Paint. They're bad)
-    - It's preferrable that we make them since we don't want to steal
-Levels (just need to get backgrounds & enemy sprites)
-Backgrounds
-Timer
-Story?
-
-If you have any more ideas, please let everyone know!
-
-'''
 import random
 import pygame
+
 #import spritesheet ----> We'll use this once we get all our sprites done.
 
 # Set up pygame
@@ -33,7 +13,9 @@ done = False
 font = pygame.font.SysFont('Calibri', 25, True, False)# This sets the font for screen text
 clock = pygame.time.Clock()
 FPS = 60
-playtime = 120 #How many seconds a level will last
+playtime = 13846 #1 second equals about 923. This is 15 seconds long
+####!!!!!!! ^ May be why game is laggy now?
+
 
 # Game variables & images
 currentLevel = 1
@@ -177,26 +159,42 @@ class level():
             self.sprites[i].update()
             self.sprites[i].draw(screen)
 
+''' Trying different approach: functions for each level, while loop calling these functions '''
+'''def startScreen():
+    start = True
+    while start:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            if event.key == pygame.K_s:
+                start = False
+    livestext = font.render("Press S to start!", True, BLACK)
+    screen.blit(livestext, [450, 350])'''
+
+
 
 # Making those pretty pictures in the background
 levelBack1 = [['mountain.png', -50], ['hill.png', 50]]
 
-# Making those sprites be who they be
-# We will simplify all this code later
-testSprite = playerSprite(player_sprite1, 50, 50)
-testSprite2 = NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))
-testSprite3 = NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))
-testSprite4 = NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))
 
-testSprite5 = NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))
-testSprite6 = NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))
-testSprite7 = NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))
+''' Creating all the sprites! '''
+# The coins/good sprites for the character to collect
+goodSprites = pygame.sprite.Group()
+for k in range(3):
+        goodSprites.add(NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
 
-playerSprite = pygame.sprite.Group(testSprite)
-enemySprites = pygame.sprite.Group(testSprite2, testSprite3, testSprite4)
-goodSprites = pygame.sprite.Group(testSprite5, testSprite6, testSprite7)
+# Level 1 enemies
+enemySprites1 = pygame.sprite.Group()
+for k in range(3): 
+        enemySprites1.add(NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
 
-levelEnemies1 = [enemySprites, goodSprites]
+# Creating player
+player = playerSprite(player_sprite1, 50, 50)
+playerSprite = pygame.sprite.Group(player)
+
+
+# Now, putting sprites and backgrounds together to make levels
+levelEnemies1 = [enemySprites1, goodSprites]
 level_1 = level(1, levelEnemies1, levelBack1)
 
 
@@ -205,14 +203,19 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
 
-    '''# Timer
+    pygame.display.flip()
+    pygame.display.update()
+    clock.tick(60)
+
+    # Timer
     #print(clock.tick(FPS))
-    playtime -= clock.tick(FPS)//1000
-    #print(playtime)'''
+    playtime -= (clock.tick(FPS))
+    playtime = int(playtime)
+    #print(playtime)
     
     if playtime <= 0:
         currentLevel += 1
-        playtime = 120
+        playtime = 12000
     '''
     '''
     # Creating levels
@@ -224,27 +227,24 @@ while not done:
         
 
         # For every bad sprite the player runs into:
-        for k in range(testSprite.collide(enemySprites)):
-            enemySprites.add(NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))) # Add another bad sprite
+        for k in range(player.collide(enemySprites1)):
+            enemySprites1.add(NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))) # Add another bad sprite
             lives -= 1 # Take away a life
 
         # Same as above, except for good sprites
-        for k in range(testSprite.collide(goodSprites)):
+        for k in range(player.collide(goodSprites)):
             goodSprites.add(NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
             score += 1
             
     '''^ ^Next up: more levels^ ^'''
-    
 
-    
-    '''testing things here'''
+    # Now drawing and moving the player
     playerSprite.draw(screen)
-    #enemySprites.draw(screen)
-    #goodSprites.draw(screen)
+    player.move(pygame.key.get_pressed())
 
-    testSprite.move(pygame.key.get_pressed())
-    #enemySprites.update()
-    #goodSprites.update()
+    
+    '''testing code goes here'''
+    # No tests atm
     ''' End of tests '''
 
     # Displaying score, lives, time
@@ -260,6 +260,6 @@ while not done:
     # Flip, update, clock
     pygame.display.flip()
     pygame.display.update()
-    clock.tick(60)
+    #clock.tick(60)
 pygame.quit()
 quit()
