@@ -1,7 +1,6 @@
 import random
 import pygame
-#comment
-
+import time
 #import spritesheet ----> We'll use this once we get all our sprites done.
 
 # Set up pygame
@@ -9,9 +8,10 @@ pygame.init()
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('Game 0.3')
+pygame.display.set_caption('Game 0.4')
 done = False
-font = pygame.font.Font('prstartk.ttf', 15)# This sets the font for screen text
+font = pygame.font.Font('prstartk.ttf', 15)# This sets the font for screen text (lives, time left, etc)
+textbFont = pygame.font.Font('prstartk.ttf', 8) # This sets the font for text in the textbox
 clock = pygame.time.Clock()
 FPS = 60
 playtime = 13846 #1 second equals about 923. This is 15 seconds long
@@ -24,6 +24,9 @@ lives = 3
 player_sprite1 = pygame.image.load('mario.png')
 good_sprite1 = pygame.image.load('flower.png')
 bad_sprite1 = pygame.image.load('goomba.png')
+textbox = pygame.image.load('textbox.png')
+spotlight = pygame.image.load('spotlight.gif')
+textboxCoords = [175, 400]
 
 # Some colors
 BLACK = (0, 0, 0)
@@ -141,7 +144,6 @@ class level():
         ''' Speed determines how fast the level moves
             Sprites and backgrounds are meant to be lists. They contain every background and sprite the level uses.
             **Backgrounds should contain the image names and locations, not actual background objects
-            Length is how long the level is. Emma is looking into adding a timer for the game to make this work better
         '''
         self.speed = speed
         self.sprites = sprites # We need sprites to be coded before this works
@@ -159,40 +161,13 @@ class level():
             self.sprites[i].update()
             self.sprites[i].draw(screen)
 
-''' Trying different approach: functions for each level, while loop calling these functions '''
-def startScreen():
-    # Going to make buttons for start and character select. Need a title logo
-    '''List with 2 buttons: Start and options (maybe instructions too?)
-    Have arrow pointing at selected option
-    If user presses up or down: Change selected index in list
-    Add option to click later maybe, with option being selected when moused over
-    Play menu music if we have time to find some
-    '''
-    start = True
-    while start:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.key == pygame.K_s:
-                start = False
-                
-    livestext = font.render("Press S to start!", True, BLACK) #Temporary. Will replace with buttons once I get basics working
-    screen.blit(livestext, [450, 350])
-
-    pygame.display.flip()
-    pygame.display.update()
-    clock.tick(60)
-
-#def cutscene1():
-    
 
 
 
+'''-----------------------------'''
 
 # Making those pretty pictures in the background
 levelBack1 = [['mountain.png', -50], ['hill.png', 50]]
-
 
 ''' Creating all the sprites! '''
 # The coins/good sprites for the character to collect
@@ -206,7 +181,7 @@ for k in range(3):
         enemySprites1.add(NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
 
 # Creating player
-player = playerSprite(player_sprite1, 50, 50)
+player = playerSprite(player_sprite1, 340, 350)
 playerSprite = pygame.sprite.Group(player)
 
 
@@ -214,7 +189,101 @@ playerSprite = pygame.sprite.Group(player)
 levelEnemies1 = [enemySprites1, goodSprites]
 level_1 = level(1, levelEnemies1, levelBack1)
 
+'''-----------------------------'''
+# Now we make all the functions for the scenes in the game
+def text(text, location):
+    ''' This function creates the text in textboxes. '''
+    outText = ""
+    outText2 = ""
+    outText3 = ""
+    for k in range(len(text)):
+        # Gotta check if the window is closed out of
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                
+        # Getting the text
+        if k < 40:    
+            outText += text[k]
+        elif k < 80:
+            outText2 += text[k]
+        else:
+            outText3 += text[k]
+            
+        # Create Font objects with the text we just got
+        displayText = textbFont.render(outText, True, BLACK)
+        displayText2 = textbFont.render(outText2, True, BLACK)
+        displayText3 = textbFont.render(outText3, True, BLACK)
+        #Displaying the text
+        screen.blit(displayText, location)
+        screen.blit(displayText2, [location[0], location[1]+20])
+        screen.blit(displayText3, [location[0], location[1]+40])
+        # Update the screen and wait
+        pygame.display.flip()
+        pygame.display.update()
+        time.sleep(0.05)
 
+    
+def startScreen():
+    # Going to make buttons for start and character select. Need a title logo
+    '''List with 2 buttons: Start and options (maybe instructions too?)
+    Have arrow pointing at selected option
+    If user presses up or down: Change selected index in list
+    Add option to click later maybe, with option being selected when moused over
+    Play menu music if we have time to find some
+    '''
+    mountain = background('mountain.png', 1, -50)
+    hill = background('hill.png', 2, 50)
+    done = False
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:
+                    done = True
+                    
+        screen.fill(BACKGROUND)
+        mountain.draw()
+        hill.draw()
+        mountain.move()
+        hill.move()
+        
+        livestext = font.render("Press S to start!", True, BLACK) #Temporary. Will replace with buttons once I get basics working
+        screen.blit(livestext, [250, 450])
+
+        pygame.display.flip()
+        pygame.display.update()
+        clock.tick(60)
+
+def cutscene1():
+    # This list contains all the dialogue for the cutscene!
+    textList = ["Hello..?   ", "Willow, can you hear me?", "If you can, I need you to... Wait. You  don't remember, do you?", "...       ", "Listen to me, Willow. You may not       remember me or what you're doing here,  but you are in great danger.", "There is an army of monsters controlled by an evil witch, and they're probably  looking for you right now.", "You need to get out of there, wherever  you are. It is not safe.", "I hope you still remember enough magic  to defend yourself..."]
+    done = False
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            
+        # A loop going through the text list and displaying it all
+        for k in range(len(textList)):
+            screen.fill(BLACK)
+            screen.blit(spotlight, [220, 50])
+            screen.blit(textbox, textboxCoords)
+            playerSprite.draw(screen)
+            text(textList[k], [195, 415])
+            pygame.event.wait() # Wait for user to do something
+
+        done = True
+
+
+startScreen()
+cutscene1()
+
+# This while loop will be replaced eventually
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -231,7 +300,7 @@ while not done:
     
     # Creating levels
     screen.fill(BACKGROUND)
-    
+    print(currentLevel)
     if currentLevel == 1:
         level_1.drawBack()
         level_1.updateSprites()
