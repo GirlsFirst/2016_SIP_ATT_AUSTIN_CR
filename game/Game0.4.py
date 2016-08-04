@@ -16,6 +16,8 @@ clock = pygame.time.Clock()
 FPS = 60
 playtime = 13846 #1 second equals about 923. This is 15 seconds long
 
+####!!!!!!! ^
+
 
 # Game variables & images
 currentLevel = 1
