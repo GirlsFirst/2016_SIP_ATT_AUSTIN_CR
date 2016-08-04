@@ -1,5 +1,6 @@
 import random
 import pygame
+#comment
 
 #import spritesheet ----> We'll use this once we get all our sprites done.
 
@@ -221,7 +222,7 @@ while not done:
 
     # Timer
     playtime -= (clock.tick(FPS))
-    playtime = int(playtime/10)
+    playtime = int(playtime)
     
     if playtime <= 0:
         currentLevel += 1
