@@ -195,6 +195,8 @@ def startScreen():
 # Making those pretty pictures in the background
 levelBack1 = [['mountain.png', -50], ['hill.png', 50]]
 levelBack2 = [['nglac.png', -50], ['icefloor.png', 50]]
+levelBack3 = [['night.png', -50], ['crater.png', 50]] 
+
 
 
 ''' Creating all the sprites! '''
@@ -218,7 +220,8 @@ levelEnemies1 = [enemySprites1, goodSprites]
 level_1 = level(1, levelEnemies1, levelBack1)
 levelEnemies2 = [enemySprites1, goodSprites]
 level_2 = level (2, levelEnemies1, levelBack2)
-
+levelEnemies3 = [enemySprites1, levelBack3]
+level_3 = level (3, levelEnemies2, levelBack3)
 
 while not done:
     for event in pygame.event.get():
@@ -254,6 +257,9 @@ while not done:
     if currentLevel == 2:
         level_2.drawBack()
         level_2.updateSprites()
+    if currentLevel == 3:
+        level_3.drawBack()
+        level_3.updateSprites()
             
     '''^ ^Next up: more levels^ ^'''
 
