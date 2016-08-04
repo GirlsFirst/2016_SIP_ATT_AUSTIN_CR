@@ -194,6 +194,7 @@ def startScreen():
 
 # Making those pretty pictures in the background
 levelBack1 = [['mountain.png', -50], ['hill.png', 50]]
+levelBack2 = [['nglac.png', -50], ['icefloor.png', 50]]
 
 
 ''' Creating all the sprites! '''
@@ -215,6 +216,8 @@ playerSprite = pygame.sprite.Group(player)
 # Now, putting sprites and backgrounds together to make levels
 levelEnemies1 = [enemySprites1, goodSprites]
 level_1 = level(1, levelEnemies1, levelBack1)
+levelEnemies2 = [enemySprites1, goodSprites]
+level_2 = level (2, levelEnemies1, levelBack2)
 
 
 while not done:
@@ -248,6 +251,9 @@ while not done:
         for k in range(player.collide(goodSprites)):
             goodSprites.add(NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
             score += 1
+    if currentLevel == 2:
+        level_2.drawBack()
+        level_2.updateSprites()
             
     '''^ ^Next up: more levels^ ^'''
 
