@@ -14,7 +14,7 @@ font = pygame.font.SysFont('Calibri', 25, True, False)# This sets the font for s
 clock = pygame.time.Clock()
 FPS = 60
 playtime = 13846 #1 second equals about 923. This is 15 seconds long
-####!!!!!!! ^ May be why game is laggy now?
+####!!!!!!! ^
 
 
 # Game variables & images
