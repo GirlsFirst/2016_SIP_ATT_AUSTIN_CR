@@ -10,11 +10,10 @@ SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Game 0.3')
 done = False
-font = pygame.font.SysFont('Calibri', 25, True, False)# This sets the font for screen text
+font = pygame.font.Font('prstartk.ttf', 15)# This sets the font for screen text
 clock = pygame.time.Clock()
 FPS = 60
 playtime = 13846 #1 second equals about 923. This is 15 seconds long
-####!!!!!!! ^ May be why game is laggy now?
 
 
 # Game variables & images
@@ -160,16 +159,33 @@ class level():
             self.sprites[i].draw(screen)
 
 ''' Trying different approach: functions for each level, while loop calling these functions '''
-'''def startScreen():
+def startScreen():
+    # Going to make buttons for start and character select. Need a title logo
+    '''List with 2 buttons: Start and options (maybe instructions too?)
+    Have arrow pointing at selected option
+    If user presses up or down: Change selected index in list
+    Add option to click later maybe, with option being selected when moused over
+    Play menu music if we have time to find some
+    '''
     start = True
     while start:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                done = True
+                pygame.quit()
+                quit()
             if event.key == pygame.K_s:
                 start = False
-    livestext = font.render("Press S to start!", True, BLACK)
-    screen.blit(livestext, [450, 350])'''
+                
+    livestext = font.render("Press S to start!", True, BLACK) #Temporary. Will replace with buttons once I get basics working
+    screen.blit(livestext, [450, 350])
+
+    pygame.display.flip()
+    pygame.display.update()
+    clock.tick(60)
+
+#def cutscene1():
+    
+
 
 
 
@@ -203,21 +219,15 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
 
-    pygame.display.flip()
-    pygame.display.update()
-    clock.tick(60)
-
     # Timer
-    #print(clock.tick(FPS))
     playtime -= (clock.tick(FPS))
-    playtime = int(playtime)
-    #print(playtime)
+    playtime = int(playtime/10)
     
     if playtime <= 0:
         currentLevel += 1
         playtime = 12000
-    '''
-    '''
+
+    
     # Creating levels
     screen.fill(BACKGROUND)
     
@@ -248,10 +258,10 @@ while not done:
     ''' End of tests '''
 
     # Displaying score, lives, time
-    scoretext = font.render("Score: "+str(score), True, BLACK)
+    scoretext = font.render("Score:"+str(score), True, BLACK)
     screen.blit(scoretext, [10, 5])
 
-    livestext = font.render("Lives: "+str(lives), True, BLACK)
+    livestext = font.render("Lives:"+str(lives), True, BLACK)
     screen.blit(livestext, [10, 30])
 
     timetext = font.render(str(playtime), True, BLACK)
