@@ -66,6 +66,7 @@ class background():
             self.x = self.w-4
         if self.x1 < 0-self.w:
             self.x1 = self.w-4
+ 
 
     def draw(self):
         # Drawing the images
@@ -195,7 +196,12 @@ def startScreen():
 # Making those pretty pictures in the background
 levelBack1 = [['mountain.png', -50], ['hill.png', 50]]
 levelBack2 = [['nglac.png', -50], ['icefloor.png', 50]]
-levelBack3 = [['night.png', -50], ['crater.png', 50]] 
+levelBack3 = [['back_fire.png', -50], ['fire.png', 50]]
+stop3 = [['back_fire.png', -50], ['castle.png', 50]]
+'''levelBack3 = [['night.png', -50], ['crater.png', 50]]
+levelBack4 = [['water.png', -50], ['water_floor.png', 50]]'''
+
+
 
 
 
@@ -221,7 +227,16 @@ level_1 = level(1, levelEnemies1, levelBack1)
 levelEnemies2 = [enemySprites1, goodSprites]
 level_2 = level (2, levelEnemies1, levelBack2)
 levelEnemies3 = [enemySprites1, levelBack3]
-level_3 = level (3, levelEnemies2, levelBack3)
+level_3 = level (3, levelEnemies1, levelBack3)
+levelEnemies6 = [enemySprites1, stop3]
+stop_3 = level (4, levelEnemies1, stop3)
+
+'''levelEnemies3 = [enemySprites1, levelBack3]
+level_3 = level (3, levelEnemies1, levelBack3)
+levelEnemies4 = [enemySprites1, levelBack4]
+level_4 = level (4, levelEnemies1, levelBack4)'''
+
+
 
 while not done:
     for event in pygame.event.get():
@@ -260,6 +275,20 @@ while not done:
     if currentLevel == 3:
         level_3.drawBack()
         level_3.updateSprites()
+    if currentLevel == 4:
+        stop_3.drawBack()
+        stop_3.updateSprites()
+    '''if currentLevel == 5:
+        level_5.drawBack()
+        level_5.updateSprites()
+    if currentLevel == 6:
+        stop_6.drawBack()'''
+        
+#if statements to fix the glitch on level's four and five
+
+
+    
+    
             
     '''^ ^Next up: more levels^ ^'''
 
