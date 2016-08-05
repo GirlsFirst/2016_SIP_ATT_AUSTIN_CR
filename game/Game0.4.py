@@ -1,10 +1,14 @@
 import random
 import pygame
+file = 'intro.mp3'
+level_music = 'level_music.mp3'
+
 #comment
 
 #import spritesheet ----> We'll use this once we get all our sprites done.
 
 # Set up pygame
+pygame.mixer.pre_init(44100, -16, 2, 2048) #this code avoids the lag in the sound
 pygame.init()
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 500
@@ -17,6 +21,23 @@ FPS = 60
 playtime = 13846 #1 second equals about 923. This is 15 seconds long
 
 ####!!!!!!! ^
+
+#set up intro music
+
+pygame.mixer.init()
+pygame.mixer.music.load(file)
+
+pygame.mixer.music.play(-1)
+
+
+'''#set up level music
+def level_music():
+    pygame.mixer.init()
+    pygame.mixer.music.load(level_music)
+    pygame.mixer.play(-1)'''
+
+
+
 
 
 # Game variables & images
@@ -259,6 +280,9 @@ while not done:
         level_1.drawBack()
         level_1.updateSprites()
         
+        
+        
+        
 
         # For every bad sprite the player runs into:
         for k in range(player.collide(enemySprites1)):
@@ -269,22 +293,72 @@ while not done:
         for k in range(player.collide(goodSprites)):
             goodSprites.add(NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
             score += 1
+    pygame.mixer.music.get_pos(27690)
+
+    '''level 2'''
     if currentLevel == 2:
         level_2.drawBack()
         level_2.updateSprites()
+        
+        # For every bad sprite the player runs into:
+        for k in range(player.collide(enemySprites1)):
+            enemySprites1.add(NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))) # Add another bad sprite
+            lives -= 1 # Take away a life
+
+        # Same as above, except for good sprites
+        for k in range(player.collide(goodSprites)):
+            goodSprites.add(NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
+            score += 1
+    
+    
+        
+    '''level 3'''
     if currentLevel == 3:
         level_3.drawBack()
         level_3.updateSprites()
+    
+        # For every bad sprite the player runs into:
+        for k in range(player.collide(enemySprites1)):
+            enemySprites1.add(NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))) # Add another bad sprite
+            lives -= 1 # Take away a life
+
+        # Same as above, except for good sprites
+        for k in range(player.collide(goodSprites)):
+            goodSprites.add(NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
+            score += 1
+            
     if currentLevel == 4:
         stop_3.drawBack()
-        stop_3.updateSprites()
-    '''if currentLevel == 5:
+
+    
+        
+            
+        #trying to get the screen to stop
+        '''LBuffer = 16
+        RBuffer = 1000 - 16
+        TBuffer = 900 - 16
+        BBuffer = 16
+        if self.x > RBuffer:
+            self.x = RBuffer
+
+        if self.x < LBuffer:
+            self.x = LBuffer
+
+        if self.y > TBuffer:
+            self.y = TBuffer
+
+        if self.y < BBuffer:
+            self.y = BBuffer'''
+        
+    
+        
+    '''if currentLevel = 5:
         level_5.drawBack()
         level_5.updateSprites()
     if currentLevel == 6:
         stop_6.drawBack()'''
         
-#if statements to fix the glitch on level's four and five
+
 
 
     
