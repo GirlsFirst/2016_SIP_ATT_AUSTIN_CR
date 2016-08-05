@@ -14,6 +14,7 @@ Make better backgrounds (I (Emma) made these in 5 minutes in Paint. They're bad)
 Levels (just need to get backgrounds & enemy sprites)
 Backgrounds
 Story?
+The Willow's dry tears 
 
 If you have any more ideas, please let everyone know!
 
