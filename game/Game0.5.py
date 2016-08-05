@@ -8,25 +8,25 @@ pygame.init()
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('Game 0.4')
+pygame.display.set_caption('Game 0.5')
 done = False
 font = pygame.font.Font('prstartk.ttf', 15)# This sets the font for screen text (lives, time left, etc)
 textbFont = pygame.font.Font('prstartk.ttf', 8) # This sets the font for text in the textbox
 clock = pygame.time.Clock()
 FPS = 60
-playtime = 13846 #1 second equals about 923. This is 15 seconds long
+#playtime = 13846 #1 second equals about 923. This is 15 seconds long
 
 
 # Game variables & images
-currentLevel = 1
 score = 0
 lives = 3
-player_sprite1 = pygame.image.load('mario.png')
+player_sprite1 = pygame.transform.scale(pygame.image.load('Girl_Stand.png'), (25, 75))
 good_sprite1 = pygame.image.load('flower.png')
 bad_sprite1 = pygame.image.load('goomba.png')
 textbox = pygame.image.load('textbox.png')
 spotlight = pygame.image.load('spotlight.gif')
 textboxCoords = [175, 400]
+textCoords = [195, 415]
 
 # Some colors
 BLACK = (0, 0, 0)
@@ -93,18 +93,60 @@ class playerSprite(sprite):
     def __init__(self, img, x, y):
         sprite.__init__(self, img, x, y)
         pygame.sprite.Sprite.__init__(self)
+        #self.velocy = 0
+        #self.ground = y
+        #self.fireList = []
+        #self.fireGroup = pygame.sprite.Group()
+        self.isjump = False
+        self.isfalling = False
+        self.v = 0
         
     def move(self, inp):
+        F = 0
         # Making the player move
         if inp[pygame.K_LEFT]:
-            self.rect.x -=5
+            self.rect.x -= 4
         if inp[pygame.K_RIGHT]:
-            self.rect.x += 5
-        if inp[pygame.K_UP]:
-            self.rect.y -=5
+            self.rect.x += 4
+        '''if inp[pygame.K_UP]:
+            self.rect.y -= 4
         if inp[pygame.K_DOWN]:
-            self.rect.y +=5
+            self.rect.y += 4'''
+        if inp[pygame.K_UP]:
+            self.isjump = True
 
+        #jumping
+        if self.isjump:
+            self.rect.y -= self.v
+            self.v -= 1
+            if self.rect.y >= SCREEN_HEIGHT-self.sizey:
+                self.isjump = False
+        else:
+            self.v = 20
+
+        '''if self.isfalling:
+            self.rect.y += self.v
+            self.v += 0.5
+            if self.rect.y => SCREEN_HEIGHT:
+                self.isfalling = False'''
+            
+        '''self.rect.y = self.rect.y - F
+        self.v = self.v - 1
+
+        if self.rect.y >= 500:
+            self.rect.y = 500
+            self.isjump = 0
+            self.v = 8
+            self.isjump = False
+
+        
+        self.rect.y += self.velocy
+        if self.velocy < 0:
+            self.velocy += 0.1
+        #if self.rect.y > self.ground:
+            #self.velocy = 0
+            #self.rect.y = self.ground'''
+            
         # Making sure the player does not leave the windowed cage
         if self.rect.y > SCREEN_HEIGHT - self.sizey:
             self.rect.y = SCREEN_HEIGHT - self.sizey
@@ -115,8 +157,20 @@ class playerSprite(sprite):
         elif self.rect.x < 0:
             self.rect.x = 0
 
+    #def fire(self, target):
+        '''if len(self.fireList) < 10:
+            self.fireList.append((len(self.fireList))=NPCSprite(pygame.image.load('flower.png'), self.rect.x, self.rect.y, 2, 0))
+            self.fireGroup.add(len(self.fireList))
+            print(len(self.fireList))
+        for k in range(10):
+            self.fireList[k].collide(target)
+            #if self.fireList[k].x > SCREEN_WIDTH:
+                #self.fireList[k].remove()
+        self.fireGroup.update()'''
+            
+
 ''' -*-*-*- NPC Sprite Class -*-*-*- '''
-# This is mostly for powerups
+# Other Sprites
 class NPCSprite(sprite):
     def __init__(self, img, x, y, speedx, speedy):
         sprite.__init__(self, img, x, y)
@@ -146,7 +200,7 @@ class level():
             **Backgrounds should contain the image names and locations, not actual background objects
         '''
         self.speed = speed
-        self.sprites = sprites # We need sprites to be coded before this works
+        self.sprites = sprites
         self.backgrounds = []
         for i in range(len(backgroundList)):
             self.backgrounds.append(background(backgroundList[i][0], self.speed+i, backgroundList[i][1]))
@@ -274,16 +328,97 @@ def cutscene1():
             screen.blit(spotlight, [220, 50])
             screen.blit(textbox, textboxCoords)
             playerSprite.draw(screen)
-            text(textList[k], [195, 415])
+            text(textList[k], textCoords)
             pygame.event.wait() # Wait for user to do something
 
         done = True
 
+def gameOver():
+    #not working correctly
+    screen.fill((0,0,0))
+    overText = font.render("GAME OVER", True, WHITE)
+    screen.blit(overText, [300, 50])
+    done = False
+    print(done)
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+                print(done)
+        #print("hi")
+        screen.fill((0,0,0))
+        #overText = font.render("GAME OVER", True, WHITE)
+        screen.blit(overText, [300, 50])
+    pygame.quit()
+    quit()
+    
+def level1():
+    # Level 1 code
+    score = 0
+    lives = 3
+    clock.tick(FPS)
+    #level_1 = level(1, levelEnemies1, levelBack1)
+    playtime = 27690
+    BACKGROUND = (204, 255, 255)
+    screen.fill(BACKGROUND)
+    level_1.drawBack()
+    #screen.blit(textbox, textboxCoords)
+    #text("*You think you still remember some magic.. Press SPACE to use it!* ", textCoords) #can't get the projectiles to work
+    #pygame.event.wait()
+
+    #Now for the main while loop
+    while playtime >= 0:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        '''if lives <= 0:
+            screen.fill((0,0,0))
+            overText = font.render("GAME OVER", True, WHITE)
+            screen.blit(overText, [300, 50])''' #not working correctly
+        
+        
+        playtime -= (clock.tick(FPS))
+        playtime = int(playtime)
+
+        # Backgrounds, sprites, and player
+        screen.fill(BACKGROUND)
+        level_1.drawBack()
+        level_1.updateSprites()
+        playerSprite.draw(screen)
+        player.move(pygame.key.get_pressed())
+        #Handling sprite interaction
+        # For every bad sprite the player runs into:
+        for k in range(player.collide(enemySprites1)):
+            enemySprites1.add(NPCSprite(bad_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2))) # Add another bad sprite
+            lives -= 1 # Take away a life
+
+        # Same as above, except for good sprites
+        for k in range(player.collide(goodSprites)):
+            goodSprites.add(NPCSprite(good_sprite1, SCREEN_WIDTH, random.randint(50, SCREEN_HEIGHT), -4, 0))
+            score += 1
+        
+        # Displaying score, lives, time
+        scoretext = font.render("Score:"+str(score), True, BLACK)
+        screen.blit(scoretext, [10, 5])
+
+        livestext = font.render("Lives:"+str(lives), True, BLACK)
+        screen.blit(livestext, [10, 30])
+
+        timetext = font.render(str(playtime), True, BLACK)
+        screen.blit(timetext, [500, 5])
+
+        pygame.display.flip()
+        pygame.display.update()
+
 
 startScreen()
-cutscene1()
+#cutscene1()
+level1()
+#cutscene2() Figure out what is happening in this scene
+gameOver()
 
-# This while loop will be replaced eventually
+'''# This while loop will be replaced eventually
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -295,7 +430,7 @@ while not done:
     
     if playtime <= 0:
         currentLevel += 1
-        playtime = 12000
+        playtime = 13846
 
     
     # Creating levels
@@ -316,16 +451,16 @@ while not done:
             goodSprites.add(NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
             score += 1
             
-    '''^ ^Next up: more levels^ ^'''
+    ^ ^Next up: more levels^ ^
 
     # Now drawing and moving the player
     playerSprite.draw(screen)
     player.move(pygame.key.get_pressed())
 
     
-    '''testing code goes here'''
+    testing code goes here
     # No tests atm
-    ''' End of tests '''
+     End of tests 
 
     # Displaying score, lives, time
     scoretext = font.render("Score:"+str(score), True, BLACK)
@@ -343,3 +478,4 @@ while not done:
     #clock.tick(60)
 pygame.quit()
 quit()
+'''
