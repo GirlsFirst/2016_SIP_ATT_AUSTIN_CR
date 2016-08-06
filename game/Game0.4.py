@@ -293,7 +293,7 @@ while not done:
         for k in range(player.collide(goodSprites)):
             goodSprites.add(NPCSprite(good_sprite1, random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), random.randint(-2, 2), random.randint(-2, 2)))
             score += 1
-    pygame.mixer.music.get_pos(27690)
+    
 
     '''level 2'''
     if currentLevel == 2:
