@@ -3,6 +3,10 @@ import pygame
 import time
 file = 'intro.mp3'
 level_music = 'level_music.mp3'
+#<<<<<< HEAD
+
+#=======
+#>>>>>>> bf07322e37038967621cec0d10131fdc8dcaa5ae
 #import spritesheet ----> We'll use this once we get all our sprites done.
 
 # Set up pygame
@@ -13,9 +17,10 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Game 0.5')
 done = False
 font = pygame.font.Font('prstartk.ttf', 15)# This sets the font for screen text (lives, time left, etc)
-textbFont = pygame.font.Font('prstartk.ttf', 8) # This sets the font for text in the textbox
+textbFont = pygame.font.Font('prstartk.ttf', 9) # This sets the font for text in the textbox
 clock = pygame.time.Clock()
 FPS = 60
+#<<<<<<< HEAD
 playtime = 13846 #1 second equals about 923. This is 15 seconds long
 #set up intro music
 
@@ -23,6 +28,9 @@ pygame.mixer.init()
 pygame.mixer.music.load(file)
 
 pygame.mixer.music.play(-1)
+#=======
+#playtime = 13846 #1 second equals about 923. This is 15 seconds long
+#>>>>>>> bf07322e37038967621cec0d10131fdc8dcaa5ae
 
 
 # Game variables & images
@@ -230,9 +238,12 @@ class level():
 
 # Making those pretty pictures in the background
 levelBack1 = [['mountain.png', -50], ['hill.png', 50]]
+#<<<<<<< HEAD
 levelBack2 = [['nglac.png', -50], ['icefloor.png', 50]]
 levelBack3 = [['back_fire.png', -50], ['fire.png', 50]]
 stop3 = [['back_fire.png', -50], ['castle.png', 50]]
+#=======
+#>>>>>>> bf07322e37038967621cec0d10131fdc8dcaa5ae
 
 ''' Creating all the sprites! '''
 # The coins/good sprites for the character to collect
@@ -253,12 +264,15 @@ playerSprite = pygame.sprite.Group(player)
 # Now, putting sprites and backgrounds together to make levels
 levelEnemies1 = [enemySprites1, goodSprites]
 level_1 = level(1, levelEnemies1, levelBack1)
+#<<<<<<< HEAD
 levelEnemies2 = [enemySprites1, goodSprites]
 level_2 = level (2, levelEnemies1, levelBack2)
 levelEnemies3 = [enemySprites1, levelBack3]
 level_3 = level (3, levelEnemies1, levelBack3)
 levelEnemies6 = [enemySprites1, stop3]
 stop_3 = level (4, levelEnemies1, stop3)
+#=======
+#>>>>>>> bf07322e37038967621cec0d10131fdc8dcaa5ae
 
 '''-----------------------------'''
 # Now we make all the functions for the scenes in the game
@@ -304,8 +318,8 @@ def startScreen():
     Add option to click later maybe, with option being selected when moused over
     Play menu music if we have time to find some
     '''
-    mountain = background('mountain.png', 1, -50)
-    hill = background('hill.png', 2, 50)
+    mountain = background('starter_screen.png', 1, -50)
+    #hill = background('hill.png', 2, 50)
     done = False
     while not done:
         for event in pygame.event.get():
@@ -318,9 +332,9 @@ def startScreen():
                     
         screen.fill(BACKGROUND)
         mountain.draw()
-        hill.draw()
-        mountain.move()
-        hill.move()
+        #hill.draw()
+        #mountain.move()
+        #hill.move()
         
         livestext = font.render("Press S to start!", True, BLACK) #Temporary. Will replace with buttons once I get basics working
         screen.blit(livestext, [250, 450])
@@ -331,7 +345,7 @@ def startScreen():
 
 def cutscene1():
     # This list contains all the dialogue for the cutscene!
-    textList = ["Hello..?   ", "Willow, can you hear me?", "If you can, I need you to... Wait. You  don't remember, do you?", "...       ", "Listen to me, Willow. You may not       remember me or what you're doing here,  but you are in great danger.", "There is an army of monsters controlled by an evil witch, and they're probably  looking for you right now.", "You need to get out of there, wherever  you are. It is not safe.", "I hope you still remember enough magic  to defend yourself..."]
+    textList = ["Hello..?   ", "Willow, can you hear me?", "If you can, I need you to... Wait. You  don't remember, do you?", "...       ", "Listen to me, Willow. You may not       remember me or what you're doing here,  but you are in great danger.", "There is an army of monsters controlled by an evil witch, and they're probably  looking for you right now.", "You need to get out of there, wherever  you are. It is not safe.", "I hope you still remember enough magic  to defend yourself...", "Good Luck Willow", "and remember...", "use the arrow keys to move"]
     done = False
     while not done:
         for event in pygame.event.get():
@@ -366,14 +380,18 @@ def gameOver():
         screen.fill((0,0,0))
         #overText = font.render("GAME OVER", True, WHITE)
         screen.blit(overText, [300, 50])
+#<<<<<<< HEAD
 
         pygame.display.flip()
         pygame.display.update()
+#=======
+#>>>>>>> bf07322e37038967621cec0d10131fdc8dcaa5ae
     pygame.quit()
     quit()
     
 def level1():
     # Level 1 code
+    cutscene1()
     score = 0
     lives = 3
     clock.tick(FPS)
@@ -392,11 +410,21 @@ def level1():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+
+    
+    
+#<<<<<<< HEAD
         if lives <= 0:
             '''screen.fill((0,0,0))
             overText = font.render("GAME OVER", True, WHITE)
             screen.blit(overText, [300, 50]) #not working correctly'''
             return
+#=======
+        '''if lives <= 0:
+            screen.fill((0,0,0))
+            overText = font.render("GAME OVER", True, WHITE)
+            screen.blit(overText, [300, 50])''' #not working correctly
+#>>>>>>> bf07322e37038967621cec0d10131fdc8dcaa5ae
         
         
         playtime -= (clock.tick(FPS))
@@ -431,6 +459,7 @@ def level1():
 
         pygame.display.flip()
         pygame.display.update()
+
 
 
 startScreen()

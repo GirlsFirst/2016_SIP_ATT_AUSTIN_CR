@@ -5,12 +5,12 @@ Updated 8/3/16
 TODO:
 Name game!
 Make sprites
-    - Powerups (if there's time)
-    - Bosses (if there's time)
-    - Spritesheet
-    - Make jumping mechanic for player
+- Powerups (if there's time)
+- Bosses (if there's time)
+- Spritesheet
+- Make jumping mechanic for player
 Make better backgrounds (I (Emma) made these in 5 minutes in Paint. They're bad)
-    - It's preferrable that we make them since we don't want to steal
+- It's preferrable that we make them since we don't want to steal
 Levels (just need to get backgrounds & enemy sprites)
 Backgrounds
 Story?
@@ -19,5 +19,4 @@ The Willow's dry tears
 If you have any more ideas, please let everyone know!
 
 changelog:
-- Finished timer
-- BUG: Game is laggy
+- Added first scene
