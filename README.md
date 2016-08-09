@@ -1,22 +1,7 @@
-Game 0.4
+Game 1.1
 by Emma, Nathalie, Nisa
-Updated 8/3/16
-
-TODO:
-Name game!
-Make sprites
-- Powerups (if there's time)
-- Bosses (if there's time)
-- Spritesheet
-- Make jumping mechanic for player
-Make better backgrounds (I (Emma) made these in 5 minutes in Paint. They're bad)
-- It's preferrable that we make them since we don't want to steal
-Levels (just need to get backgrounds & enemy sprites)
-Backgrounds
-Story?
-The Willow's dry tears 
-
-If you have any more ideas, please let everyone know!
+Updated 8/9/16
 
 changelog:
-- Added first scene
+- Added music to bosses
+- minor lag fixes to levels and boss 3

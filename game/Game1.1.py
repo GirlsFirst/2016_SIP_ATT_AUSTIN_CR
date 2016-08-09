@@ -573,8 +573,6 @@ def level2():
 
         seconds = (pygame.time.get_ticks()-start_ticks)/1000
         
-        playtime -= (clock.tick(FPS))
-        playtime = int(playtime)
 
         # Backgrounds, sprites, and player
         screen.fill(BACKGROUND)
@@ -658,8 +656,6 @@ def level3():
     screen.blit(textbox, textboxCoords)
     text("Level 3, START!", textCoords)
     player.setcoords(0, SCREEN_HEIGHT-player.sizey)
-    clock.tick(FPS)
-    playtime = 36920
     BACKGROUND = (255, 191, 128)
     screen.fill(BACKGROUND)
     level_3.drawBack()
@@ -677,9 +673,6 @@ def level3():
             return
 
         seconds = (pygame.time.get_ticks()-start_ticks)/1000
-        
-        playtime -= (clock.tick(FPS))
-        playtime = int(playtime)
 
         # Backgrounds, sprites, and player
         screen.fill(BACKGROUND)
@@ -780,6 +773,8 @@ def boss1():
         pygame.display.update()
         clock.tick(60)
         
+        pygame.mixer.music.load('intro.mp3')
+        pygame.mixer.music.play(-1)
     if not skipped:    
         '''Script! '''
         #Turtle is facing player
@@ -849,6 +844,7 @@ def boss1():
             text(textList3[k], textCoords)
             pygame.event.wait()
 
+        pygame.mixer.music.fadeout(1000)
         #Oh dear he's trying to destroy the world again
         for k in range(len(textList4)):
             screen.fill(BACKGROUND)
@@ -859,11 +855,7 @@ def boss1():
             #currentx = turtle.rect.x
             screen.blit(textbox, textboxCoords)
             text(textList4[k], textCoords)
-            '''for k in range(100):
-                if turtle.rect.x == currentx:
-                    turtle.setcoords(currentx+5, turtle.rect.y)
-                else:
-                    turtle.setcoords(currentx, turtle.rect.y)'''
+            
             pygame.display.flip()
             pygame.display.update()
             
@@ -892,7 +884,8 @@ def boss1():
             time.sleep(0.03)
             
 
-
+        pygame.mixer.music.load('intro.mp3')
+        pygame.mixer.music.play(-1)
         #His final lines. He's probably insane from living alone in the mountains
         for k in range(len(textList5)):
             screen.blit(textbox, textboxCoords)
@@ -903,6 +896,7 @@ def boss1():
         screen.fill(BLACK)
         screen.blit(textbox, textboxCoords)
         text("Boss... Defeated?", textCoords)
+        pygame.mixer.music.fadeout(1000)
         pygame.event.wait()
 
 def boss2():
@@ -976,7 +970,9 @@ def boss2():
         pygame.display.flip()
         pygame.display.update()
         time.sleep(0.5)
-        
+
+        pygame.mixer.music.load('intro.mp3')
+        pygame.mixer.music.play(-1)
         #Says next lines
         for k in range(len(textList2)):
             screen.blit(textbox, textboxCoords)
@@ -1066,6 +1062,7 @@ def boss2():
         screen.fill(BLACK)
         screen.blit(textbox, textboxCoords)
         text("Was that even a boss fight?", textCoords)
+        pygame.mixer.music.fadeout(1000)
         pygame.event.wait()
 def boss3():
     global lives
@@ -1131,13 +1128,16 @@ def boss3():
         text("*Boss, FIGHT!*", textCoords)
         time.sleep(3)
         screen.fill(BACKGROUND)
-        #screen.blit(redback, (0,-50))
+        screen.blit(redback, (0,-50))
         screen.blit(fireback, (0,50))
         playerList.draw(screen)
         fireBoss.draw(screen)
         pygame.display.flip()
         pygame.display.update()
         time.sleep(0.5)
+
+        pygame.mixer.music.load('intro.mp3')
+        pygame.mixer.music.play(-1)
         
         #First Lines
         for k in range(len(textList)):
@@ -1173,7 +1173,7 @@ def boss3():
                 
             #Redrawing everything for more madness
             screen.fill(BACKGROUND)
-            #screen.blit(redback, (0,-50))
+            screen.blit(redback, (0,-50))
             screen.blit(fireback, (0,50))
             playerList.draw(screen)
             fireBoss.draw(screen)
@@ -1185,6 +1185,7 @@ def boss3():
             pygame.display.update()
             time.sleep(0.05)
 
+        pygame.mixer.music.fadeout(1000)
         #Oh, he's mad now!
         for k in range(len(textList4)):
             screen.blit(textbox, textboxCoords)
@@ -1192,10 +1193,10 @@ def boss3():
             pygame.event.wait()
 
         #HE'S CHARGING
-        for k in range(25):
+        for k in range(50):
             firelord.setcoords(firelord.rect.x - 4, firelord.rect.y)
             screen.fill(BACKGROUND)
-            #screen.blit(redback, (0,-50))
+            screen.blit(redback, (0,-50))
             screen.blit(fireback, (0,50))
             playerList.draw(screen)
             fireBoss.draw(screen)
@@ -1208,28 +1209,36 @@ def boss3():
         time.sleep(1.5)
         bubbleAttack.setcoords(player.rect.x + player.sizex, player.rect.y)
         currentx = player.rect.x
-        for k in range(200):
+        for k in range(10):
             if player.rect.x == currentx:
                 player.setcoords(currentx+5, player.rect.y)
             else:
                 player.setcoords(currentx, player.rect.y)
             screen.fill(BACKGROUND)
-            #screen.blit(redback, (0,-50))
+            screen.blit(redback, (0,-50))
             screen.blit(fireback, (0,50))
             playerList.draw(screen)
             fireBoss.draw(screen)
-            #these beautiful conditionals make that bubble thing flash
-            if k >= 50 and k < 150 and k % 3 == 0:
-                bubbleList.draw(screen)
-            elif k >= 150:
-                bubbleList.draw(screen)
             time.sleep(0.05)
+            
             pygame.display.flip()
             pygame.display.update()
 
+        for k in range(20):
+            #Flash! OOHH!
+            screen.fill(BACKGROUND)
+            screen.blit(redback, (0,-50))
+            screen.blit(fireback, (0,50))
+            playerList.draw(screen)
+            fireBoss.draw(screen)
+            if k <= 10 and k % 2 == 0:
+                bubbleList.draw(screen)
+                
+        bubbleList.draw(screen)
+        time.sleep(0.5)
+
         #It's like bowling, except the bowling pin is the Fire Lord and the ball is a... blue bubble thing
-        time.sleep(1)
-        for k in range(50):
+        '''for k in range(50):
             bubbleAttack.setcoords(bubbleAttack.rect.x+2, bubbleAttack.rect.y)
             screen.fill(BACKGROUND)
             screen.blit(redback, (0,-50))
@@ -1238,11 +1247,11 @@ def boss3():
             fireBoss.draw(screen)
             bubbleList.draw(screen)
             pygame.display.flip()
-            pygame.display.update()
+            pygame.display.update()'''
 
-        for k in range(int((SCREEN_WIDTH-(bubbleAttack.rect.x + bubbleAttack.sizex)-(firelord.sizex))/2)):
+        for k in range(int((SCREEN_WIDTH-(bubbleAttack.rect.x + bubbleAttack.sizex)-(firelord.sizex))/5)):
             screen.fill(BACKGROUND)
-            #screen.blit(redback, (0,-50))
+            screen.blit(redback, (0,-50))
             screen.blit(fireback, (0,50))
             playerList.draw(screen)
             fireBoss.draw(screen)
@@ -1255,10 +1264,28 @@ def boss3():
             else:
                 bubbleAttack.setcoords(bubbleAttack.rect.x+5, bubbleAttack.rect.y)
                 bubbleList.draw(screen)
-            
+
+            clock.tick(FPS)
             pygame.display.flip()
             pygame.display.update()
 
+        for k in range(20):
+            #Flash! OOHH!
+            screen.fill(BACKGROUND)
+            screen.blit(redback, (0,-50))
+            screen.blit(fireback, (0,50))
+            playerList.draw(screen)
+            fireBoss.draw(screen)
+            if k % 2 == 0:
+                bubbleList.draw(screen)
+
+        screen.fill(BACKGROUND)
+        screen.blit(redback, (0,-50))
+        screen.blit(fireback, (0,50))
+        playerList.draw(screen)
+        fireBoss.draw(screen)
+        time.sleep(0.05)
+        
         #Ouch.. That look like that hurt
         for k in range(len(textList6)):
             screen.blit(textbox, textboxCoords)
@@ -1271,18 +1298,18 @@ def boss3():
         for k in range(50):
             firelord.setcoords(firelord.rect.x + 1, firelord.rect.y)
             screen.fill(BACKGROUND)
-            #screen.blit(redback, (0,-50))
+            screen.blit(redback, (0,-50))
             screen.blit(fireback, (0,50))
             playerList.draw(screen)
             fireBoss.draw(screen)
             pygame.display.flip()
             pygame.display.update()
 
-        #screen.blit(redback, (0,-50))
+        '''screen.blit(redback, (0,-50))
         screen.blit(fireback, (0,50))
         playerList.draw(screen)
         fireBoss.draw(screen)
-        time.sleep(0.1)
+        time.sleep(0.1)'''
 
         #Inviting you to fight his queen. How kind
         for k in range(len(textList7)):
@@ -1290,6 +1317,8 @@ def boss3():
             text(textList7[k], textCoords)
             pygame.event.wait()
 
+        pygame.mixer.music.load('intro.mp3')
+        pygame.mixer.music.play(-1)
         #Wow, he's even giving directions!
         for k in range(len(textList8)):
             screen.blit(textbox, textboxCoords)
@@ -1300,7 +1329,7 @@ def boss3():
         for k in range(50):
             firelord.setcoords(firelord.rect.x + 5, firelord.rect.y)
             screen.fill(BACKGROUND)
-            #screen.blit(redback, (0,-50))
+            screen.blit(redback, (0,-50))
             screen.blit(fireback, (0,50))
             playerList.draw(screen)
             fireBoss.draw(screen)
@@ -1316,6 +1345,7 @@ def boss3():
         screen.fill(BLACK)
         screen.blit(textbox, textboxCoords)
         text("Boss Defeated!", textCoords)
+        pygame.mixer.music.fadeout(1000)
         pygame.event.wait()
 
 def toBeContin():
@@ -1339,13 +1369,13 @@ def toBeContin():
     
 #Ok, now that all that nonsense is done, we can actually make the game do stuff.
 while True:
-    #startScreen()
-    #cutscene1()
-    #level1()
-    #boss1()
-    #level2()
-    #boss2()
-    #level3()
+    startScreen()
+    cutscene1()
+    level1()
+    boss1()
+    level2()
+    boss2()
+    level3()
     boss3()
     toBeContin()
     gameOver()
